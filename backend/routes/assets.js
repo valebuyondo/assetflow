@@ -4,8 +4,6 @@ const Asset = require('../models/Asset');
 const { protect, authorize } = require('../middleware/auth');
 const auditLog = require('../middleware/auditLog');
 
-const auditLog = require('../middleware/auditLog');
-
 // ... existing imports ...
 
 router.post('/', protect, authorize('admin', 'manager'), auditLog('create', 'Asset'), async (req, res) => {
