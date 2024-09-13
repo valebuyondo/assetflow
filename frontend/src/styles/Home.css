@@ -1,0 +1,113 @@
+/* Home.css */
+.home-container {
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .hero {
+    background: url('./images/hero-background.jpg') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  .hero p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+  }
+  
+  .introduction {
+    padding: 50px 20px;
+    text-align: center;
+  }
+  
+  .introduction h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .introduction p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+  
+  .features {
+    background-color: #f4f4f4;
+    padding: 50px 20px;
+  }
+  
+  .features h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .features-list {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+  
+  .feature-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+  }
+  
+  .feature-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .feature-item p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .call-to-action {
+    background-color: #007bff;
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+  }
+  
+  .call-to-action h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .call-to-action .btn {
+    font-size: 1.2rem;
+    padding: 10px 30px;
+  }
+  
