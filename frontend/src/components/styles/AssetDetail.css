@@ -1,0 +1,60 @@
+/* AssetDetail.css */
+
+.asset-detail-container {
+    font-family: 'Roboto', sans-serif;
+    padding: 50px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .asset-detail-content {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .asset-info p {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+  }
+  
+  .maintenance-logs h3 {
+    margin-top: 30px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .asset-actions {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+  }
+  

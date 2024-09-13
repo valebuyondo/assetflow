@@ -5,6 +5,7 @@ import Assets from './pages/Assets';
 import AssetDetail from './components/AssetDetail';
 import AddAsset from './components/AddAsset';
 import Login from './components/Login';
+import Register from './components/Register';
 // import About from './pages/About';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
@@ -19,6 +20,7 @@ function App() {
         <Route path="/assets/:id" element={<AssetDetail />} />
         <Route path="/add-asset" element={<AddAsset />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />  {/* Register route */}
         {/* <Route path="/about" element={<About />} /> */}
         <Route path="*" element={<NotFound />} />
       </Routes>

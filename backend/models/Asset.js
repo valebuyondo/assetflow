@@ -23,29 +23,7 @@ const MaintenanceLogSchema = new mongoose.Schema({
   timestamps: true
 });
 
-AssetSchema.methods.calculateDepreciation = function() {
-    const currentDate = new Date();
-    const age = (currentDate - this.purchaseDate) / (365 * 24 * 60 * 60 * 1000); // age in years
-    
-    let depreciation = 0;
-    
-    switch(this.depreciationMethod) {
-      case 'Straight Line':
-        depreciation = (this.purchasePrice - this.residualValue) * (age / this.usefulLife);
-        break;
-      case 'Declining Balance':
-        const rate = 2 / this.usefulLife; // double declining balance
-        depreciation = this.purchasePrice * Math.pow((1 - rate), age);
-        break;
-      // Add other depreciation methods as needed
-    }
-    
-    return Math.min(this.purchasePrice - this.residualValue, depreciation);
-  };
-  
-  AssetSchema.methods.getCurrentValue = function() {
-    return this.purchasePrice - this.calculateDepreciation();
-  };
+// Declare AssetSchema first before adding methods
 const AssetSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -136,15 +114,6 @@ const AssetSchema = new mongoose.Schema({
   notes: {
     type: String
   },
-  category: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  subCategory: {
-    type: String,
-    trim: true
-  },
   tags: [{
     type: String,
     trim: true
@@ -159,6 +128,31 @@ const AssetSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+// Methods on AssetSchema (place these after the schema declaration)
+AssetSchema.methods.calculateDepreciation = function() {
+  const currentDate = new Date();
+  const age = (currentDate - this.purchaseDate) / (365 * 24 * 60 * 60 * 1000); // age in years
+
+  let depreciation = 0;
+  
+  switch (this.depreciationMethod) {
+    case 'Straight Line':
+      depreciation = (this.purchasePrice - this.residualValue) * (age / this.usefulLife);
+      break;
+    case 'Declining Balance':
+      const rate = 2 / this.usefulLife; // double declining balance
+      depreciation = this.purchasePrice * Math.pow((1 - rate), age);
+      break;
+    // Add other depreciation methods as needed
+  }
+
+  return Math.min(this.purchasePrice - this.residualValue, depreciation);
+};
+
+AssetSchema.methods.getCurrentValue = function() {
+  return this.purchasePrice - this.calculateDepreciation();
+};
 
 AssetSchema.pre('save', function(next) {
   if (this.isNew) {
