@@ -31,12 +31,16 @@ const Register = () => {
       return;
     }
 
+    // Prepare data to send to the backend (exclude confirmPassword)
+    const { username, email, password } = formData;
+    const userData = { username, email, password };
+    
     try {
-      await register(formData); // Register API call
-      navigate('/login'); // Redirect to login after successful registration
-    } catch (err) {
-      setError('Failed to register. Please try again.');
-    }
+        await register(userData);  // Only send username, email, and password
+        // Handle success (e.g., redirect to login page)
+      } catch (err) {
+        setError(err.message);  // Show error message
+      }
   };
 
   return (
