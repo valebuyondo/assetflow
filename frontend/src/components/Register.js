@@ -1,54 +1,64 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from '../services/api'; // Assuming you have this API set up
-import './styles/Register.css'; // For external styling
+import { register } from '../services/api'; // API function for registration
+import './styles/Register.css';  // Assuming you have an existing CSS file
 
 const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: ''  // Only used for client-side validation
   });
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);  // Track success message
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear error message
+    setError(null);
+    setSuccess(null);
 
-    // Check if passwords match
+    // Frontend validation: Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
-    // Prepare data to send to the backend (exclude confirmPassword)
+    // Prepare data to send to the backend (excluding confirmPassword)
     const { username, email, password } = formData;
     const userData = { username, email, password };
-    
+
     try {
-        await register(userData);  // Only send username, email, and password
-        // Handle success (e.g., redirect to login page)
-      } catch (err) {
-        setError(err.message);  // Show error message
-      }
+      // Call the register API
+      await register(userData);
+
+      // On success, show success message and redirect after 2 seconds
+      setSuccess('Registration successful! Redirecting to login...');
+      setTimeout(() => {
+        navigate('/login');  // Redirect to the login page after success
+      }, 2000);
+    } catch (err) {
+      // Handle error messages
+      setError(err.message);
+    }
   };
 
   return (
     <div className="register-container">
       <h1>Register</h1>
-      {error && <div className="error">{error}</div>}
+      
+      {/* Popups for success and error */}
+      {success && <div className="popup success-popup">{success}</div>}
+      {error && <div className="popup error-popup">{error}</div>}
+
       <form onSubmit={handleSubmit} className="register-form">
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="username">Username</label>
         <input
           type="text"
           id="username"
@@ -58,7 +68,7 @@ const Register = () => {
           required
         />
 
-        <label htmlFor="email">Email:</label>
+        <label htmlFor="email">Email</label>
         <input
           type="email"
           id="email"
@@ -68,7 +78,7 @@ const Register = () => {
           required
         />
 
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password">Password</label>
         <input
           type="password"
           id="password"
@@ -78,7 +88,7 @@ const Register = () => {
           required
         />
 
-        <label htmlFor="confirmPassword">Confirm Password:</label>
+        <label htmlFor="confirmPassword">Confirm Password</label>
         <input
           type="password"
           id="confirmPassword"
@@ -88,12 +98,8 @@ const Register = () => {
           required
         />
 
-        <button type="submit" className="btn btn-primary">Register</button>
+        <button type="submit" className="btn">Register</button>
       </form>
-
-      <div className="register-links">
-        <p>Already have an account? <a href="/login">Login here</a></p>
-      </div>
     </div>
   );
 };

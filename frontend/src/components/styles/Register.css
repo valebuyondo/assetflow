@@ -1,62 +1,62 @@
 /* Register.css */
 
 .register-container {
-    font-family: 'Roboto', sans-serif;
-    max-width: 400px;
-    margin: 100px auto;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    text-align: center;
-  }
-  
-  h1 {
-    margin-bottom: 30px;
-  }
-  
-  .register-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .register-form label {
-    margin-bottom: 5px;
-    text-align: left;
-    font-size: 1rem;
-  }
-  
-  .register-form input {
-    padding: 10px;
-    margin-bottom: 20px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .btn {
-    padding: 10px;
-    font-size: 1.1rem;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .error {
-    color: red;
-    margin-bottom: 20px;
-  }
-  
-  .register-links {
-    margin-top: 20px;
-    font-size: 0.9rem;
-  }
-  
-  .register-links a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
+  max-width: 400px;
+  margin: 50px auto;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  text-align: left;
+  font-size: 1rem;
+}
+
+input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Popups for success and error */
+.popup {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.success-popup {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.error-popup {
+  background-color: #f8d7da;
+  color: #721c24;
+}

@@ -18,23 +18,40 @@ const handleError = (error) => {
 };
 
 // Register a new user
-export const register = async (userData) => {
-  console.log('Sending Data:', userData);  // Log the data being sent
+// export const register = async (userData) => {
+//   console.log('Sending Data:', userData);  // Log the data being sent
 
+//   try {
+//     const response = await axios.post(`${API_URL}/auth/register`, userData, {
+//       headers: { 'Content-Type': 'application/json' },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     if (error.response && error.response.data.errors) {
+//       console.error('Validation Errors:', error.response.data.errors);  // Log backend validation errors
+//       throw new Error(error.response.data.errors[0].msg);
+//     } else {
+//       throw new Error('Registration failed');
+//     }
+//   }
+// };
+export const register = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/auth/register`, userData, {
       headers: { 'Content-Type': 'application/json' },
     });
-    return response.data;
+    return response.data;  // Return success response
   } catch (error) {
     if (error.response && error.response.data.errors) {
-      console.error('Validation Errors:', error.response.data.errors);  // Log backend validation errors
+      // Return the first validation error message
       throw new Error(error.response.data.errors[0].msg);
+    } else if (error.response && error.response.data.msg) {
+      // Handle user exists or other backend custom errors
+      throw new Error(error.response.data.msg);
     } else {
       throw new Error('Registration failed');
     }
-  }
-};
+  }}
 
 // Login a user
 export const login = async (userData) => {
