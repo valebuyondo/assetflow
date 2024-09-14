@@ -55,7 +55,7 @@ export const register = async (userData) => {
 
 // Login a user
 export const login = async (userData) => {
-  console.log('Sending data:', userData);  // Log the data being sent to the backend
+  console.log('Password being sent:', userData.password);  // Log the password being sent
   try {
     const response = await axios.post(`${API_URL}/auth/login`, userData, {
       headers: { 'Content-Type': 'application/json' },
@@ -71,7 +71,7 @@ export const login = async (userData) => {
   }
 };
 
-// Fetch all assets
+// // Fetch all assets
 export const fetchAssets = async () => {
   try {
     const token = localStorage.getItem('token');
@@ -84,7 +84,7 @@ export const fetchAssets = async () => {
   }
 };
 
-// Fetch a single asset by ID
+// // Fetch a single asset by ID
 export const fetchAsset = async (id) => {
   try {
     const token = localStorage.getItem('token');
