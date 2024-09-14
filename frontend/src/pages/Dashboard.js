@@ -4,6 +4,7 @@ import '../styles/Dashboard.css';  // Styling for the dashboard
 
 const Dashboard = () => {
   const [userRole, setUserRole] = useState(null);
+  const [loading, setLoading] = useState(true);  // Add loading state
   const [statistics, setStatistics] = useState({
     totalUsers: 0,
     totalAssets: 0,
@@ -12,9 +13,20 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch user role from token or API
-    const role = localStorage.getItem('role');  // Example role stored in localStorage or token
-    setUserRole(role);
+    // Check if the token exists in localStorage (i.e., user is authenticated)
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');  // Redirect to login if no token is found
+      return;
+    }
+
+    // Simulate fetching user role from localStorage or API
+    const role = localStorage.getItem('role');
+    if (role) {
+      setUserRole(role);
+    } else {
+      navigate('/login');  // Redirect if no role is found
+    }
 
     // Fetch statistics (mock example)
     const fetchStatistics = () => {
@@ -29,12 +41,11 @@ const Dashboard = () => {
     };
 
     fetchStatistics();
-
-    // Redirect to login if not authenticated
-    if (!role) {
-      navigate('/login');
-    }
+    setLoading(false);  // Stop loading after fetching role and stats
   }, [navigate]);
+
+  // If still loading or waiting for role, show a loading spinner or nothing
+  if (loading || !userRole) return <p>Loading...</p>;
 
   return (
     <div className="dashboard-container">
@@ -43,7 +54,7 @@ const Dashboard = () => {
         <ul>
           <li><a href="/assets">Assets</a></li>
           {userRole === 'admin' && <li><a href="/manage-users">Manage Users</a></li>}
-          {userRole === 'admin' || userRole === 'manager' ? <li><a href="/reports">View Reports</a></li> : null}
+          {(userRole === 'admin' || userRole === 'manager') && <li><a href="/reports">View Reports</a></li>}
           <li><a href="/profile">My Profile</a></li>
           <li><a href="/logout">Logout</a></li>
         </ul>

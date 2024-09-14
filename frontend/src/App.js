@@ -20,6 +20,7 @@ function App() {
         <Route path="/assets" element={<Assets />} />
         <Route path="/assets/:id" element={<AssetDetail />} />
         <Route path="/add-asset" element={<AddAsset />} />
+        <Route path="/" element={<Login />} />  {/* Redirects to Login */}
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />  {/* Register route */}

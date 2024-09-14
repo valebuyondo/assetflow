@@ -18,23 +18,7 @@ const handleError = (error) => {
 };
 
 // Register a new user
-// export const register = async (userData) => {
-//   console.log('Sending Data:', userData);  // Log the data being sent
 
-//   try {
-//     const response = await axios.post(`${API_URL}/auth/register`, userData, {
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     if (error.response && error.response.data.errors) {
-//       console.error('Validation Errors:', error.response.data.errors);  // Log backend validation errors
-//       throw new Error(error.response.data.errors[0].msg);
-//     } else {
-//       throw new Error('Registration failed');
-//     }
-//   }
-// };
 export const register = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/auth/register`, userData, {
@@ -54,13 +38,29 @@ export const register = async (userData) => {
   }}
 
 // Login a user
+// export const login = async (userData) => {
+//   console.log('Password being sent:', userData.password);  // Log the password being sent
+//   try {
+//     const response = await axios.post(`${API_URL}/auth/login`, userData, {
+//       headers: { 'Content-Type': 'application/json' },
+//     });
+//     localStorage.setItem('token', response.data.token);
+//     return response.data;
+//   } catch (error) {
+//     if (error.response && error.response.data.msg) {
+//       throw new Error(error.response.data.msg);
+//     } else {
+//       throw new Error('Login failed');
+//     }
+//   }
+// };
+
 export const login = async (userData) => {
-  console.log('Password being sent:', userData.password);  // Log the password being sent
   try {
-    const response = await axios.post(`${API_URL}/auth/login`, userData, {
-      headers: { 'Content-Type': 'application/json' },
-    });
-    localStorage.setItem('token', response.data.token);
+    const response = await axios.post(`${API_URL}/auth/login`, userData);
+    console.log('Login Response:', response.data);  // Log the response to check the token
+    localStorage.setItem('token', response.data.token);  // Store the JWT token
+    localStorage.setItem('role', response.data.role);  // Store the user's role (if it's returned)
     return response.data;
   } catch (error) {
     if (error.response && error.response.data.msg) {
@@ -70,6 +70,7 @@ export const login = async (userData) => {
     }
   }
 };
+
 
 // // Fetch all assets
 export const fetchAssets = async () => {
