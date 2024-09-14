@@ -19,13 +19,20 @@ const handleError = (error) => {
 
 // Register a new user
 export const register = async (userData) => {
+  console.log('Sending Data:', userData);  // Log the data being sent
+
   try {
     const response = await axios.post(`${API_URL}/auth/register`, userData, {
       headers: { 'Content-Type': 'application/json' },
     });
     return response.data;
   } catch (error) {
-    handleError(error);
+    if (error.response && error.response.data.errors) {
+      console.error('Validation Errors:', error.response.data.errors);  // Log backend validation errors
+      throw new Error(error.response.data.errors[0].msg);
+    } else {
+      throw new Error('Registration failed');
+    }
   }
 };
 
