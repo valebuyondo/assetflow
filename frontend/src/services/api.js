@@ -55,15 +55,19 @@ export const register = async (userData) => {
 
 // Login a user
 export const login = async (userData) => {
+  console.log('Sending data:', userData);  // Log the data being sent to the backend
   try {
     const response = await axios.post(`${API_URL}/auth/login`, userData, {
       headers: { 'Content-Type': 'application/json' },
     });
-    // Store the JWT token if login is successful
     localStorage.setItem('token', response.data.token);
     return response.data;
   } catch (error) {
-    handleError(error);
+    if (error.response && error.response.data.msg) {
+      throw new Error(error.response.data.msg);
+    } else {
+      throw new Error('Login failed');
+    }
   }
 };
 

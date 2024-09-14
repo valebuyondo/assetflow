@@ -132,19 +132,14 @@ router.post(
         return res.status(400).json({ msg: 'Invalid credentials' });
       }
 
-      // Check if the password is correct
+      // Compare the provided password with the hashed password in the database
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(400).json({ msg: 'Invalid credentials' });
       }
 
-      // Return a JWT token
-      const payload = {
-        user: {
-          id: user.id
-        }
-      };
-
+      // Generate and return a JWT token
+      const payload = { user: { id: user.id } };
       jwt.sign(
         payload,
         process.env.JWT_SECRET,
