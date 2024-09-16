@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Dashboard.css';  // Styling for the dashboard
+import '../styles/Dashboard.css';  // Dashboard-specific styling
 
 const Dashboard = () => {
   const [userRole, setUserRole] = useState(null);
-  const [loading, setLoading] = useState(true);  // Add loading state
+  const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState({
     totalUsers: 0,
     totalAssets: 0,
@@ -13,38 +13,34 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the token exists in localStorage (i.e., user is authenticated)
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login');  // Redirect to login if no token is found
+      navigate('/login');
       return;
     }
 
-    // Simulate fetching user role from localStorage or API
     const role = localStorage.getItem('role');
     if (role) {
       setUserRole(role);
     } else {
-      navigate('/login');  // Redirect if no role is found
+      navigate('/login');
     }
 
-    // Fetch statistics (mock example)
     const fetchStatistics = () => {
       setStatistics({
         totalUsers: 120,
         totalAssets: 450,
         recentActivities: [
           { activity: 'Asset #123 checked in', date: '2024-09-14' },
-          { activity: 'New user registered: jdoe@example.com', date: '2024-09-13' }
+          { activity: 'New user registered', date: '2024-09-13' }
         ]
       });
     };
 
     fetchStatistics();
-    setLoading(false);  // Stop loading after fetching role and stats
+    setLoading(false);
   }, [navigate]);
 
-  // If still loading or waiting for role, show a loading spinner or nothing
   if (loading || !userRole) return <p>Loading...</p>;
 
   return (
@@ -62,7 +58,7 @@ const Dashboard = () => {
 
       <main className="main-content">
         <div className="dashboard-header">
-          <h1>Welcome, {userRole === 'admin' ? 'Admin' : userRole === 'manager' ? 'Manager' : 'User'}</h1>
+          <h1>Welcome, {userRole === 'admin' ? 'Admin' : 'User'}</h1>
           <p>Here is your overview and recent activities.</p>
         </div>
 
@@ -89,10 +85,6 @@ const Dashboard = () => {
             <div className="action-card" onClick={() => navigate('/add-asset')}>
               <h3>Add New Asset</h3>
               <p>Add a new asset to the system</p>
-            </div>
-            <div className="action-card" onClick={() => navigate('/reports')}>
-              <h3>View Reports</h3>
-              <p>Generate or view system reports</p>
             </div>
           </div>
         </div>

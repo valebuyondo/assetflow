@@ -10,6 +10,8 @@ import Register from './components/Register';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';  // Import Dashboard
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (

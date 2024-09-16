@@ -1,43 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { fetchAssets } from '../services/api'; // Ensure you have a working API call here
-import '../styles/Assets.css'; // External CSS for styling
+import { fetchAssets } from '../services/api';  // Fetch assets from API
+import { Table, Container } from 'react-bootstrap';  // Import Bootstrap components
 
 const Assets = () => {
-  const [assets, setAssets] = useState([]);
+  const [assets, setAssets] = useState([]);  // Initialize assets as an empty array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch assets from the backend when the component mounts
+  // Fetch assets on component mount
   useEffect(() => {
     const getAssets = async () => {
       try {
-        const { data } = await fetchAssets();
-        setAssets(data);
+        const data = await fetchAssets();  // Fetch data from API
+        setAssets(data);  // Set fetched data to assets
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch assets');
         setLoading(false);
       }
     };
+
     getAssets();
   }, []);
 
-  if (loading) return <div className="loading">Loading assets...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) return <div className="text-center mt-5">Loading...</div>;  // Loading indicator
+  if (error) return <div className="text-danger text-center mt-5">{error}</div>;  // Error message
 
+  // Render assets data in a Bootstrap table
   return (
-    <div className="assets-container">
-      <h1>Asset List</h1>
-      <div className="assets-table">
-        <table>
-          <thead>
+    <Container className="mt-5">
+      <h1 className="mb-4 text-center">Assets</h1>
+      {assets.length > 0 ? (
+        <Table striped bordered hover responsive>
+          <thead className="thead-dark">
             <tr>
-              <th>Asset Name</th>
+              <th>Name</th>
               <th>Category</th>
+              <th>Serial Number</th>
               <th>Purchase Date</th>
-              <th>Value</th>
-              <th>Actions</th>
+              <th>QR Code</th>
             </tr>
           </thead>
           <tbody>
@@ -45,25 +46,19 @@ const Assets = () => {
               <tr key={asset._id}>
                 <td>{asset.name}</td>
                 <td>{asset.category}</td>
+                <td>{asset.serialNumber}</td>
                 <td>{new Date(asset.purchaseDate).toLocaleDateString()}</td>
-                <td>${asset.value.toLocaleString()}</td>
                 <td>
-                  <Link to={`/assets/${asset._id}`} className="btn btn-details">
-                    View Details
-                  </Link>
+                  <img src={asset.qrCode} alt={`QR Code for ${asset.name}`} style={{ width: '50px' }} />
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
-      </div>
-
-      <div className="add-asset-container">
-        <Link to="/add-asset" className="btn btn-add">
-          Add New Asset
-        </Link>
-      </div>
-    </div>
+        </Table>
+      ) : (
+        <p className="text-center">No assets found</p>
+      )}
+    </Container>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Home.css'; // External CSS for better organization
+import '../styles/Home.css';  // External CSS for better organization
 
 const Home = () => {
   return (
@@ -25,7 +25,7 @@ const Home = () => {
       <section className="introduction">
         <h2>What is AssetFlow?</h2>
         <p>
-          AssetFlow is an asset management system that helps you keep track of your valuable assets, monitor depreciation, and streamline asset management processes. Whether you're managing physical or digital assets, AssetFlow provides you with the tools to keep everything organized and secure.
+          AssetFlow helps you keep track of your valuable assets, monitor depreciation, and streamline asset management.
         </p>
       </section>
 
@@ -35,15 +35,15 @@ const Home = () => {
         <div className="features-list">
           <div className="feature-item">
             <h3>Real-time Asset Tracking</h3>
-            <p>Track all your assets in real time and manage them with ease.</p>
+            <p>Track all your assets in real time.</p>
           </div>
           <div className="feature-item">
             <h3>Depreciation Calculator</h3>
-            <p>Automatically calculate asset depreciation over time to keep your records accurate.</p>
+            <p>Automatically calculate asset depreciation.</p>
           </div>
           <div className="feature-item">
             <h3>Secure and Accessible</h3>
-            <p>All your asset data is stored securely and is accessible from anywhere at any time.</p>
+            <p>Your data is stored securely and accessible from anywhere.</p>
           </div>
         </div>
       </section>
