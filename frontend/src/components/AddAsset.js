@@ -34,16 +34,27 @@ const AddAsset = () => {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log('Form Data:', formData);  // Log the form data being sent to the backend
+  //   try {
+  //     await addAsset(formData);  // Call the API to add the asset
+  //     navigate('/assets');  // Redirect after success
+  //   } catch (err) {
+  //     setError('Failed to add asset');
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form Data:', formData);  // Log the data being sent
     try {
-      await addAsset(formData);
-      navigate('/assets'); // Redirect to the assets list after successful submission
+      await addAsset(formData);  // Send the data to the backend
+      alert('Asset added successfully');
+      navigate('/assets');  // Redirect on success
     } catch (err) {
       setError('Failed to add asset');
     }
   };
-
   return (
     <div className="add-asset-container">
       <h1>Add New Asset</h1>
@@ -96,6 +107,14 @@ const AddAsset = () => {
             <label>
               Residual Value:
               <input type="number" name="residualValue" value={formData.residualValue} onChange={handleChange} />
+            </label>
+            <label>
+            manufacturer
+              <input type="number" name="manufacturer" value={formData.residualValue} onChange={handleChange} />
+            </label>
+            <label>
+              Model:
+              <input type="number" name="model" value={formData.residualValue} onChange={handleChange} />
             </label>
           </div>
         </fieldset>

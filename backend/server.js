@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Routes
 const assetRoutes = require('./routes/assets');
 const authRoutes = require('./routes/auth');
-app.use('/api/assets', assetRoutes);
+app.use('/api', assetRoutes);
 app.use('/api/auth', authRoutes); // Authentication routes including registration
 
 app.get('/', (req, res) => {

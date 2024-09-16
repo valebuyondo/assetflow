@@ -4,19 +4,6 @@ const Asset = require('../models/Asset');
 const { protect, authorize } = require('../middleware/auth');
 const auditLog = require('../middleware/auditLog');
 
-// ... existing imports ...
-
-router.post('/', protect, authorize('admin', 'manager'), auditLog('create', 'Asset'), async (req, res) => {
-  // ... existing code ...
-});
-
-router.patch('/:id', protect, authorize('admin', 'manager'), auditLog('update', 'Asset'), async (req, res) => {
-  // ... existing code ...
-});
-
-router.delete('/:id', protect, authorize('admin'), auditLog('delete', 'Asset'), async (req, res) => {
-  // ... existing code ...
-});
 
 // GET all assets
 router.get('/', protect, async (req, res) => {
@@ -36,17 +23,6 @@ router.get('/:id', protect, async (req, res) => {
     res.json(asset);
   } catch (err) {
     res.status(500).json({ message: err.message });
-  }
-});
-
-// POST a new asset
-router.post('/', protect, authorize('admin', 'manager'), async (req, res) => {
-  const asset = new Asset(req.body);
-  try {
-    const newAsset = await asset.save();
-    res.status(201).json(newAsset);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
   }
 });
 
@@ -187,5 +163,33 @@ router.post('/bulk', protect, authorize('admin'), async (req, res) => {
       res.status(400).json({ message: err.message });
     }
   });
+
+  // POST route to add a new asset
+router.post('/assets', async (req, res) => {
+  const { name, category, serialNumber, purchasePrice, purchaseDate } = req.body;
+
+  try {
+    if (!name || !category || !serialNumber || !purchasePrice || !purchaseDate) {
+      return res.status(400).json({ msg: 'Please provide all required fields' });
+    }
+
+    // Create a new asset
+    const asset = new Asset({
+      name,
+      category,
+      serialNumber,
+      purchasePrice,
+      purchaseDate,
+      ...req.body  // Add other fields dynamically
+    });
+
+    await asset.save();
+    res.status(201).json(asset);
+  } catch (error) {
+    console.error('Error saving asset:', error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 
   module.exports = router;

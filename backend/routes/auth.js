@@ -61,25 +61,68 @@ router.post(
 );
 
 // Login a user
+// router.post('/login', async (req, res) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     // Find the user by email
+//     let user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(400).json({ msg: 'Invalid credentials' });
+//     }
+//     console.log('Hashed password in DB:', user.password);  // Log the stored hashed password
+//     // Use the comparePassword method from the User model
+//     const isMatch = await user.comparePassword(password);
+//     console.log('Password match:', isMatch);  // Log true or false
+//     if (!isMatch) {
+//       return res.status(400).json({ msg: 'Invalid credentials' });
+//     }
+
+//     // Generate a JWT token
+//     // const payload = { user: { id: user.id } };
+//     const payload = {
+//       user: {
+//         id: user.id,
+//         role: user.role  // Make sure the role is part of the token payload
+//       }
+//     };
+
+//     jwt.sign(
+//       payload,
+//       process.env.JWT_SECRET,
+//       { expiresIn: 360000 },
+//       (err, token) => {
+//         if (err) throw err;
+//         res.json({ token });
+//       }
+//     );
+//   } catch (err) {
+//     console.error('Server error:', err.message);
+//     res.status(500).send('Server error');
+//   }
+// });
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find the user by email
     let user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
-    console.log('Hashed password in DB:', user.password);  // Log the stored hashed password
-    // Use the comparePassword method from the User model
-    const isMatch = await user.comparePassword(password);
-    console.log('Password match:', isMatch);  // Log true or false
+
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
-    // Generate a JWT token
-    const payload = { user: { id: user.id } };
+    // Ensure role is part of the JWT payload
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role  // Include the user's role in the token
+      }
+    };
+
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
@@ -90,9 +133,10 @@ router.post('/login', async (req, res) => {
       }
     );
   } catch (err) {
-    console.error('Server error:', err.message);
+    console.error(err.message);
     res.status(500).send('Server error');
   }
 });
+
 
 module.exports = router;

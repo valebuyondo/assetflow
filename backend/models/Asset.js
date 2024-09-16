@@ -89,10 +89,10 @@ const AssetSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  assignedTo: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  },
+  // assignedTo: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User'
+  // },
   status: {
     type: String,
     required: true,

@@ -37,23 +37,6 @@ export const register = async (userData) => {
     }
   }}
 
-// Login a user
-// export const login = async (userData) => {
-//   console.log('Password being sent:', userData.password);  // Log the password being sent
-//   try {
-//     const response = await axios.post(`${API_URL}/auth/login`, userData, {
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//     localStorage.setItem('token', response.data.token);
-//     return response.data;
-//   } catch (error) {
-//     if (error.response && error.response.data.msg) {
-//       throw new Error(error.response.data.msg);
-//     } else {
-//       throw new Error('Login failed');
-//     }
-//   }
-// };
 
 export const login = async (userData) => {
   try {
@@ -73,17 +56,32 @@ export const login = async (userData) => {
 
 
 // // Fetch all assets
+// export const fetchAssets = async () => {
+//   try {
+//     const token = localStorage.getItem('token');
+//     const response = await axios.get(`${API_URL}/assets`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     handleError(error);
+//   }
+// };
 export const fetchAssets = async () => {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');  // Retrieve the JWT token
     const response = await axios.get(`${API_URL}/assets`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        'Authorization': `Bearer ${token}`  // Include token in headers
+      }
     });
     return response.data;
   } catch (error) {
-    handleError(error);
+    console.error('Error fetching assets:', error.message);
+    throw new Error('Failed to fetch assets');
   }
 };
+
 
 // // Fetch a single asset by ID
 export const fetchAsset = async (id) => {
@@ -101,16 +99,17 @@ export const fetchAsset = async (id) => {
 // Add a new asset
 export const addAsset = async (assetData) => {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');  // Retrieve JWT token
     const response = await axios.post(`${API_URL}/assets`, assetData, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,  // Include JWT token
       },
     });
     return response.data;
   } catch (error) {
-    handleError(error);
+    console.error('Error adding asset:', error.message);  // Log the error
+    throw new Error('Failed to add asset');
   }
 };
 
