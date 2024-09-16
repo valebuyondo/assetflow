@@ -6,7 +6,7 @@ const auditLog = require('../middleware/auditLog');
 
 
 // GET all assets
-router.get('/', protect, async (req, res) => {
+router.get('/assets', protect, async (req, res) => {
   try {
     const assets = await Asset.find().populate('assignedTo', 'username');
     res.json(assets);
