@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { fetchAssets } from '../services/api';  // Fetch assets from API
-import { Table, Container } from 'react-bootstrap';  // Import Bootstrap components
+import { fetchAssets, deleteAsset } from '../services/api';  // Import deleteAsset API function
+import { Table, Container, Button, Alert } from 'react-bootstrap';  // Bootstrap components
+import { useNavigate } from 'react-router-dom';  // Use to navigate to the update page
 
 const Assets = () => {
   const [assets, setAssets] = useState([]);  // Initialize assets as an empty array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);  // Success message state
+  const navigate = useNavigate();
 
   // Fetch assets on component mount
   useEffect(() => {
@@ -23,13 +26,29 @@ const Assets = () => {
     getAssets();
   }, []);
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this asset? This action cannot be undone.')) {
+      try {
+        await deleteAsset(id);  // Call API to delete the asset
+        setAssets(assets.filter((asset) => asset._id !== id));  // Remove asset from the state
+        setSuccess('Asset deleted successfully!');  // Set success message
+        setTimeout(() => setSuccess(null), 3000);  // Clear success message after 3 seconds
+      } catch (err) {
+        setError('Failed to delete asset');
+      }
+    }
+  };
+
   if (loading) return <div className="text-center mt-5">Loading...</div>;  // Loading indicator
   if (error) return <div className="text-danger text-center mt-5">{error}</div>;  // Error message
 
-  // Render assets data in a Bootstrap table
   return (
     <Container className="mt-5">
       <h1 className="mb-4 text-center">Assets</h1>
+      
+      {/* Show success message */}
+      {success && <Alert variant="success">{success}</Alert>}
+
       {assets.length > 0 ? (
         <Table striped bordered hover responsive>
           <thead className="thead-dark">
@@ -39,6 +58,7 @@ const Assets = () => {
               <th>Serial Number</th>
               <th>Purchase Date</th>
               <th>QR Code</th>
+              <th>Actions</th>  {/* Add Actions column */}
             </tr>
           </thead>
           <tbody>
@@ -50,6 +70,17 @@ const Assets = () => {
                 <td>{new Date(asset.purchaseDate).toLocaleDateString()}</td>
                 <td>
                   <img src={asset.qrCode} alt={`QR Code for ${asset.name}`} style={{ width: '50px' }} />
+                </td>
+                <td>
+                  {/* Update button */}
+                  <Button variant="info" className="mr-2" onClick={() => navigate(`/assets/update/${asset._id}`)}>
+                  Update
+                  </Button>
+
+                  {/* Delete button */}
+                  <Button variant="danger" onClick={() => handleDelete(asset._id)}>
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}

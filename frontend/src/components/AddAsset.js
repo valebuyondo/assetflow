@@ -100,11 +100,11 @@ const AddAsset = () => {
             </label>
             <label>
             manufacturer
-              <input type="number" name="manufacturer" value={formData.residualValue} onChange={handleChange} />
+              <input type="text" name="manufacturer" value={formData.manufacturer} onChange={handleChange} />
             </label>
             <label>
               Model:
-              <input type="number" name="model" value={formData.residualValue} onChange={handleChange} />
+              <input type="text" name="model" value={formData.model} onChange={handleChange} />
             </label>
           </div>
         </fieldset>
