@@ -55,18 +55,6 @@ export const login = async (userData) => {
 };
 
 
-// // Fetch all assets
-// export const fetchAssets = async () => {
-//   try {
-//     const token = localStorage.getItem('token');
-//     const response = await axios.get(`${API_URL}/assets`, {
-//       headers: { Authorization: `Bearer ${token}` },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     handleError(error);
-//   }
-// };
 export const fetchAssets = async () => {
   try {
     const token = localStorage.getItem('token');  // Retrieve the JWT token
