@@ -1,56 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Dashboard.css';  // Dashboard-specific styling
+import '../styles/Dashboard.css';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { fetchDashboardStats } from '../services/api';  // API to fetch stats
 
 const Dashboard = () => {
-  const [userRole, setUserRole] = useState(null);
+  const [stats, setStats] = useState({ totalUsers: 0, totalAssets: 0, recentActivities: [] });
   const [loading, setLoading] = useState(true);
-  const [statistics, setStatistics] = useState({
-    totalUsers: 0,
-    totalAssets: 0,
-    recentActivities: []
-  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-      return;
-    }
-
-    const role = localStorage.getItem('role');
-    if (role) {
-      setUserRole(role);
-    } else {
-      navigate('/login');
-    }
-
-    const fetchStatistics = () => {
-      setStatistics({
-        totalUsers: 120,
-        totalAssets: 450,
-        recentActivities: [
-          { activity: 'Asset #123 checked in', date: '2024-09-14' },
-          { activity: 'New user registered', date: '2024-09-13' }
-        ]
-      });
+    const getStats = async () => {
+      try {
+        const data = await fetchDashboardStats();  // Fetch stats from the backend
+        setStats(data);
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to load dashboard stats', err);
+        setLoading(false);
+      }
     };
+    getStats();
+  }, []);
 
-    fetchStatistics();
-    setLoading(false);
-  }, [navigate]);
-
-  if (loading || !userRole) return <p>Loading...</p>;
+  if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="dashboard-container">
+    <Container fluid className="dashboard-container">
       <nav className="navbar">
         <h2>AssetFlow Dashboard</h2>
         <ul>
           <li><a href="/assets">Assets</a></li>
-          {userRole === 'admin' && <li><a href="/manage-users">Manage Users</a></li>}
-          {(userRole === 'admin' || userRole === 'manager') && <li><a href="/reports">View Reports</a></li>}
+          <li><a href="/manage-users">Manage Users</a></li>
+          <li><a href="/reports">View Reports</a></li>
           <li><a href="/profile">My Profile</a></li>
           <li><a href="/logout">Logout</a></li>
         </ul>
@@ -58,42 +40,45 @@ const Dashboard = () => {
 
       <main className="main-content">
         <div className="dashboard-header">
-          <h1>Welcome, {userRole === 'admin' ? 'Admin' : 'User'}</h1>
-          <p>Here is your overview and recent activities.</p>
+          <h1>Welcome to AssetFlow</h1>
+          <p>Click on the stats to manage them</p>
         </div>
 
-        <div className="dashboard-statistics">
-          <div className="stat-card">
-            <h3>Total Users</h3>
-            <p>{statistics.totalUsers}</p>
-          </div>
-          <div className="stat-card">
-            <h3>Total Assets</h3>
-            <p>{statistics.totalAssets}</p>
-          </div>
-        </div>
+        <Row className="dashboard-statistics">
+          <Col xs={12} sm={6} xl={3}>
+            <div className="stat-card clickable" onClick={() => navigate('/assets')}>
+              <h3>Total Assets</h3>
+              <p>{stats.totalAssets}</p>
+            </div>
+          </Col>
+          <Col xs={12} sm={6} xl={3}>
+            <div className="stat-card clickable" onClick={() => navigate('/manage-users')}>
+              <h3>Total Users</h3>
+              <p>{stats.totalUsers}</p>
+            </div>
+          </Col>
+        </Row>
 
         <div className="quick-actions">
           <h2>Quick Actions</h2>
-          <div className="action-cards">
-            {userRole === 'admin' && (
-              <div className="action-card" onClick={() => navigate('/add-user')}>
-                <h3>Manage Users</h3>
-                <p>Add, edit, or delete users</p>
-              </div>
-            )}
-            <div className="action-card" onClick={() => navigate('/add-asset')}>
-              <h3>Add New Asset</h3>
-              <p>Add a new asset to the system</p>
-            </div>
-          </div>
+          <Row>
+            <Col>
+              <Button variant="primary" onClick={() => navigate('/add-asset')}>Add New Asset</Button>
+            </Col>
+            <Col>
+              <Button variant="secondary" onClick={() => navigate('/search-assets')}>Search Assets</Button>
+            </Col>
+            <Col>
+              <Button variant="info" onClick={() => navigate('/manage-maintenance')}>Manage Maintenance</Button>
+            </Col>
+          </Row>
         </div>
 
-        <div className="recent-activities">
+        <div className="recent-activities mt-4">
           <h2>Recent Activities</h2>
           <ul>
-            {statistics.recentActivities.map((activity, index) => (
-              <li key={index}>
+            {stats.recentActivities.map((activity, index) => (
+              <li key={index} className="clickable" onClick={() => navigate(`/assets/${activity.assetId}`)}>
                 <p>{activity.activity}</p>
                 <small>{activity.date}</small>
               </li>
@@ -101,8 +86,9 @@ const Dashboard = () => {
           </ul>
         </div>
       </main>
-    </div>
+    </Container>
   );
 };
 
 export default Dashboard;
+

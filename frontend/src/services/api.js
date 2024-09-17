@@ -117,15 +117,39 @@ export const updateAsset = async (id, assetData) => {
   }
 };
 
-// Delete an asset by ID
+// Fetch maintenance logs for an asset
+export const fetchMaintenanceLogs = async (assetId) => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`${API_URL}/assets/${assetId}/maintenance`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return response.data;
+};
+
+// Add a maintenance log
+export const addMaintenanceLog = async (assetId, logData) => {
+  const token = localStorage.getItem('token');
+  const response = await axios.post(`${API_URL}/assets/${assetId}/maintenance`, logData, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  return response.data;
+};
+
+export const fetchDashboardStats = async () => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`${API_URL}/dashboard/stats`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return response.data;
+};
+
 export const deleteAsset = async (id) => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.delete(`${API_URL}/assets/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
+  const token = localStorage.getItem('token');
+  const response = await axios.delete(`${API_URL}/assets/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return response.data;
 };
