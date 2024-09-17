@@ -34,16 +34,6 @@ const AddAsset = () => {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log('Form Data:', formData);  // Log the form data being sent to the backend
-  //   try {
-  //     await addAsset(formData);  // Call the API to add the asset
-  //     navigate('/assets');  // Redirect after success
-  //   } catch (err) {
-  //     setError('Failed to add asset');
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Form Data:', formData);  // Log the data being sent
