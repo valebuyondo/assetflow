@@ -72,17 +72,17 @@ export const fetchAssets = async () => {
 
 
 // // Fetch a single asset by ID
-export const fetchAsset = async (id) => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.get(`${API_URL}/assets/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
+// export const fetchAsset = async (id) => {
+//   try {
+//     const token = localStorage.getItem('token');
+//     const response = await axios.get(`${API_URL}/assets/${id}`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     handleError(error);
+//   }
+// };
 
 // Add a new asset
 export const addAsset = async (assetData) => {
@@ -102,20 +102,20 @@ export const addAsset = async (assetData) => {
 };
 
 // Update an existing asset by ID
-export const updateAsset = async (id, assetData) => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.patch(`${API_URL}/assets/${id}`, assetData, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
+// export const updateAsset = async (id, assetData) => {
+//   try {
+//     const token = localStorage.getItem('token');
+//     const response = await axios.patch(`${API_URL}/assets/${id}`, assetData, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     handleError(error);
+//   }
+// };
 
 // Fetch maintenance logs for an asset
 export const fetchMaintenanceLogs = async (assetId) => {
@@ -150,6 +150,22 @@ export const deleteAsset = async (id) => {
   const token = localStorage.getItem('token');
   const response = await axios.delete(`${API_URL}/assets/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
+  });
+  return response.data;
+};
+
+export const fetchAsset = async (id) => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`${API_URL}/assets/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return response.data;
+};
+
+export const updateAsset = async (id, assetData) => {
+  const token = localStorage.getItem('token');
+  const response = await axios.patch(`${API_URL}/assets/${id}`, assetData, {
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
   });
   return response.data;
 };

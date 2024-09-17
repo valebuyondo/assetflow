@@ -34,7 +34,9 @@ const Dashboard = () => {
           <li><a href="/manage-users">Manage Users</a></li>
           <li><a href="/reports">View Reports</a></li>
           <li><a href="/profile">My Profile</a></li>
-          <li><a href="/logout">Logout</a></li>
+          <Button variant="danger" onClick={() => navigate('/logout')}>
+  Logout
+</Button>
         </ul>
       </nav>
 
