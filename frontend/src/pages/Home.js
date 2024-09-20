@@ -10,14 +10,14 @@ const Home = () => {
         <div className="hero-content">
           <h1>Welcome to AssetFlow</h1>
           <p>Manage your assets seamlessly with our powerful platform.</p>
-          <div className="hero-buttons">
+          {/* <div className="hero-buttons">
             <Link to="/assets" className="btn btn-primary">
               View Assets
             </Link>
             <Link to="/add-asset" className="btn btn-secondary">
               Add Asset
             </Link>
-          </div>
+          </div> */}
         </div>
       </section>
 

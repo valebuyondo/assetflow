@@ -8,7 +8,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 // import About from './pages/About';
 import NotFound from './pages/NotFound';
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';  // Import Dashboard
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UpdateAsset from './components/UpdateAsset';  // Import the UpdateAsset component
@@ -19,7 +19,7 @@ import PrivateRoute from './components/PrivateRoute';  // Import PrivateRoute
 function App() {
   return (
     <Router>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/" element={<Login />} />  {/* Redirects to Login */}

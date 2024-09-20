@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Dashboard.css';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Nav, Navbar } from 'react-bootstrap';
 import { fetchDashboardStats } from '../services/api';  // API to fetch stats
+import '../styles/Dashboard.css';  // Updated styling
 
 const Dashboard = () => {
-  const [stats, setStats] = useState({ totalUsers: 0, totalAssets: 0, recentActivities: [] });
+  const [stats, setStats] = useState({ totalUsers: [], totalAssets: [], recentActivities: [] });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getStats = async () => {
       try {
-        const data = await fetchDashboardStats();  // Fetch stats from the backend
+        const data = await fetchDashboardStats();
         setStats(data);
         setLoading(false);
       } catch (err) {
@@ -27,62 +27,76 @@ const Dashboard = () => {
 
   return (
     <Container fluid className="dashboard-container">
-      <nav className="navbar">
-        <h2>AssetFlow Dashboard</h2>
-        <ul>
-          <li><a href="/assets">Assets</a></li>
-          <li><a href="/manage-users">Manage Users</a></li>
-          <li><a href="/reports">View Reports</a></li>
-          <li><a href="/profile">My Profile</a></li>
-          <Button variant="danger" onClick={() => navigate('/logout')}>
-  Logout
-</Button>
-        </ul>
-      </nav>
+      <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
+        <Navbar.Brand href="/">AssetFlow Dashboard</Navbar.Brand>
+        <Nav className="ml-auto">
+          <Nav.Link href="/assets">Assets</Nav.Link>
+          <Nav.Link href="#">Manage Users</Nav.Link>
+          <Nav.Link href="#">View Reports</Nav.Link>
+          <Nav.Link href="#">My Profile</Nav.Link>
+          <Button variant="outline-danger" onClick={() => navigate('/logout')} className="ml-3">
+            Logout
+          </Button>
+        </Nav>
+      </Navbar>
 
       <main className="main-content">
-        <div className="dashboard-header">
+        <div className="dashboard-header text-center mb-4">
           <h1>Welcome to AssetFlow</h1>
           <p>Click on the stats to manage them</p>
         </div>
 
-        <Row className="dashboard-statistics">
+        <Row className="dashboard-statistics mb-5">
           <Col xs={12} sm={6} xl={3}>
-            <div className="stat-card clickable" onClick={() => navigate('/assets')}>
-              <h3>Total Assets</h3>
-              <p>{stats.totalAssets}</p>
-            </div>
+            <Card className="stat-card clickable shadow-sm" onClick={() => navigate('/assets')}>
+              <Card.Body>
+                <Card.Title>Total Assets</Card.Title>
+                <Card.Text>{stats.totalAssets}</Card.Text>
+              </Card.Body>
+            </Card>
           </Col>
           <Col xs={12} sm={6} xl={3}>
-            <div className="stat-card clickable" onClick={() => navigate('/manage-users')}>
-              <h3>Total Users</h3>
-              <p>{stats.totalUsers}</p>
-            </div>
+            <Card className="stat-card clickable shadow-sm" onClick={() => navigate('#')}>
+              <Card.Body>
+                <Card.Title>Total Users</Card.Title>
+                <Card.Text>{stats.totalUsers}</Card.Text>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
 
-        <div className="quick-actions">
-          <h2>Quick Actions</h2>
-          <Row>
-            <Col>
-              <Button variant="primary" onClick={() => navigate('/add-asset')}>Add New Asset</Button>
+        <div className="quick-actions mb-5">
+          <h2 className="text-center mb-4">Quick Actions</h2>
+          <Row className="justify-content-center">
+            <Col xs={12} sm={4}>
+              <Button variant="primary" className="w-100 mb-2" onClick={() => navigate('/add-asset')}>
+                Add New Asset
+              </Button>
             </Col>
-            <Col>
-              <Button variant="secondary" onClick={() => navigate('/search-assets')}>Search Assets</Button>
+            <Col xs={12} sm={4}>
+              <Button variant="secondary" className="w-100 mb-2" onClick={() => navigate('#')}>
+                Search Assets
+              </Button>
             </Col>
-            <Col>
-              <Button variant="info" onClick={() => navigate('/manage-maintenance')}>Manage Maintenance</Button>
+            <Col xs={12} sm={4}>
+              <Button variant="info" className="w-100 mb-2" onClick={() => navigate('#')}>
+                Manage Maintenance
+              </Button>
             </Col>
           </Row>
         </div>
 
-        <div className="recent-activities mt-4">
-          <h2>Recent Activities</h2>
-          <ul>
+        <div className="recent-activities">
+          <h2 className="mb-4">Recent Activities</h2>
+          <ul className="list-group">
             {stats.recentActivities.map((activity, index) => (
-              <li key={index} className="clickable" onClick={() => navigate(`/assets/${activity.assetId}`)}>
-                <p>{activity.activity}</p>
-                <small>{activity.date}</small>
+              <li
+                key={index}
+                className="list-group-item d-flex justify-content-between align-items-center clickable"
+                onClick={() => navigate(`/assets/${activity.assetId}`)}
+              >
+                <span>{activity.activity}</span>
+                <small className="text-muted">{activity.date}</small>
               </li>
             ))}
           </ul>
@@ -93,4 +107,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
